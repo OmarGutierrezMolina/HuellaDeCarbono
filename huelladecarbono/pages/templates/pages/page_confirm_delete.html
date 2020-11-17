@@ -1,20 +1,16 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}Crear página{% endblock %}
+{% block title %}Borrar página{% endblock %}
 {% block content %}
 {% include 'pages/includes/pages_menu.html'%}
 <main role="main">
   <div class="container">
-    <div class="row mt-3 mb-5">
+    <div class="row mt-3">
       <div class="col-md-9 mx-auto">
         <div>
             <form action="" method="post">{% csrf_token %}
-                
-                    {{ form.as_p }}
-                
-                <div class="text-center">
-                  <input class="btn btn-primary btn-block" type="submit" value="Crear página" />
-                </div>
+                <p>¿Estás seguro de que quieres borrar "<b>{{ object }}</b>"?</p>
+                <input class="btn btn-danger btn-block" type="submit" value="Eliminar página" />
                 
             </form>
         </div>
