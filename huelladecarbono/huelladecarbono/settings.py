@@ -125,7 +125,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 #auth redirect
-LOGIN_REDIRECT_URL = 'pages:pages'
+#LOGIN_REDIRECT_URL = 'pages:pages'
 LOGOUT_REDIRECT_URL = 'home'
 
 #emails de prueba
@@ -135,3 +135,8 @@ if DEBUG:
 else:
     #Configurar mail de prueba
     pass
+
+
+#media file
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
