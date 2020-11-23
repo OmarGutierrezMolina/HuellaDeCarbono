@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ckeditor',
     'core',
+    'crispy_forms',
+    'geolocalizacion',
     'pages.apps.PagesConfig',
     
 ]
@@ -122,6 +124,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+### GEOIP PATH
+GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -145,3 +151,4 @@ else:
 #media file
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+

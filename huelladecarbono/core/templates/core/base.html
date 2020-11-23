@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %}</title>
     {% load static %}
+    
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
@@ -29,6 +30,9 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'pages:pages' %}">Páginas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'geolocalizacion:calculate_view' %}">Geo-localización</a>
               </li>
             </ul>
             <ul class="navbar-nav">

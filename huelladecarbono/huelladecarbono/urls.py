@@ -17,11 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from pages.urls import pages_patterns
 from django.conf import settings
+from geolocalizacion.urls import geolocalizacion_pattern
 
 urlpatterns = [
     path('', include('core.urls')),
     path('admin/', admin.site.urls),
+    #paths personalizados
     path('pages/', include(pages_patterns)),
+    path('geolocalizacion/', include(geolocalizacion_pattern)),
     #path auth
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('registration.urls')),
