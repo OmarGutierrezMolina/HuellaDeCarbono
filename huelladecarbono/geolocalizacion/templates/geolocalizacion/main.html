@@ -5,8 +5,13 @@
 {% block content %}
 <main role="main">
   <div class="container">
-    {{distance}}
+    {{map|safe}}
     <hr>
+    {% if  distance is not None %}
+        <p>La distancia entre {{origin}} y {{destination}} es de {{distance}} km</p>
+        <hr>
+      {% endif %}
+    
     <form action="" method="post">{% csrf_token %}
                 
       {{form|crispy}}
@@ -14,6 +19,7 @@
       <div class="text-center">
         <input class="btn btn-primary btn-block" type="submit" value="Confirmar" />
       </div>
+      
     </form>
   </div>
 </main>

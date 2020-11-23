@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import calculate_distance_view, CalculateDistanceView
+from .views import  CalculateDistanceView
 
 
 
