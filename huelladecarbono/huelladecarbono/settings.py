@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'by!00oun3evz1k=(ana%re+-*7pne(+8$#3!k=5*4o#bkk6ng5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['omarculiao.pythonanywhere.com', 'localhost', '127.0.0.1']
 
@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'huelladecarbono.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'titulo',
+        'USER':'postgres',
+        'PASSWORD':'Aguadulce1513',
+        'HOST':'127.0.0.1',
+        'DATABASE_PORT':'5432',
     }
 }
 
