@@ -13,6 +13,11 @@ import folium
 """ INTENTAR ELIMINAR ESTO
 """
 
+class HuellaCarbono(TemplateView):
+    template_name = "geolocalizacion/huella.html"
+
+
+
 class CalculateDistanceView(FormView):
     
     template_name = "geolocalizacion/main.html"

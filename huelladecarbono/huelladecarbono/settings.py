@@ -83,6 +83,17 @@ WSGI_APPLICATION = 'huelladecarbono.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'titulo',
+        'USER':'postgres',
+        'PASSWORD':'Aguadulce1513',
+        'HOST':'127.0.0.1',
+        'DATABASE_PORT':'5432',
+    }
+}
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'gxcofvyh',
         'USER':'gxcofvyh',
         'PASSWORD':'xu0D7gF9vR2otsQESqSD4SlFAoiJjLan',
@@ -90,6 +101,7 @@ DATABASES = {
         'DATABASE_PORT':'5432',
     }
 }
+"""
 
 
 # Password validation
