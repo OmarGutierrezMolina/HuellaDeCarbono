@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'huelladecarbono.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'titulo',
-        'USER':'postgres',
-        'PASSWORD':'Aguadulce1513',
-        'HOST':'127.0.0.1',
+        'NAME': 'gxcofvyh',
+        'USER':'gxcofvyh',
+        'PASSWORD':'xu0D7gF9vR2otsQESqSD4SlFAoiJjLan',
+        'HOST':'tuffi.db.elephantsql.com',
         'DATABASE_PORT':'5432',
     }
 }
