@@ -10,10 +10,9 @@ class Address(models.Model):
 
     # TODO: Define fields here
     #user = models.OneToOneField(User, on_delete=models.CASCADE)
-    location = models.CharField( max_length=200)
-    destination = models.CharField( max_length=200)
-    distance = models.DecimalField( max_digits=10, decimal_places=2)
-    created = models.DateTimeField(auto_now_add=True)
+    location = models.CharField( max_length=200, null=True)
+    destination = models.CharField( max_length=200,null=True)
+    distance = models.DecimalField( max_digits=10,null=True, decimal_places=2)
 
     class Meta:
         """Meta definition for MODELNAME."""
@@ -24,11 +23,4 @@ class Address(models.Model):
     def __str__(self):
         """Unicode representation of MODELNAME."""
         return f"Distancia de {self.location} a {self.destination} es de {self.distance} km"
-"""
-@receiver(post_save, sender=User)
-def ensure_address_exists(sender, instance, **kwargs):
-    if kwargs.get("created", False):
-        Address.object.get_or_create(user=instance)
-        print("Se crea una dirección por cada usuario")
 
-"""

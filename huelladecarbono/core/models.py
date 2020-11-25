@@ -19,11 +19,31 @@ class Place(models.Model):
         """Unicode representation of Place."""
         return self.name
 
+class Employee(models.Model):
+    """Model definition for Employee."""
+
+    # TODO: Define fields here
+    name = models.CharField( max_length=50)
+    rut=models.CharField( max_length=12)
+    phone = models.CharField( max_length=10)
+
+    class Meta:
+        """Meta definition for Employee."""
+
+        verbose_name = 'Employee'
+        verbose_name_plural = 'Employees'
+
+    def __str__(self):
+        """Unicode representation of Employee."""
+        return self.name
+
+
 class Restaurant(models.Model):
     """Model definition for Restaurant."""
 
     # TODO: Define fields here
     place = models.OneToOneField(Place, on_delete=models.CASCADE)
+    employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
     serves_hot_dogs = models.BooleanField(default = False)
     serves_pizza = models.BooleanField(default = False)
     serves_completitos = models.BooleanField(default =False)
