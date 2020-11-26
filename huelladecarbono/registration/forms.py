@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile
+from geolocalizacion.models import Address
 class UserCreationFormWithEmail(UserCreationForm):
     email = forms.EmailField(help_text="Requerido, 254 caracteres como máximo y debe ser válido", required=True)
 
@@ -20,11 +21,25 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model= Profile
         fields = ['avatar','bio','link']
+        exclude = ['address',]
         widgets = {
             'avatar' : forms.ClearableFileInput(attrs={'class':'form-control-file mt-3'}),
             'bio': forms.Textarea(attrs={'class':'form-control mt-3', 'rows':3, 'placeholder':'Biografia'}),
             'link': forms.URLInput(attrs={'class':'form-control mt-3','placeholder':'Enlace'})
         }
+
+class AddressForm(forms.ModelForm):
+    
+    class Meta:
+        model = Address
+        fields = ['location','destination','distance']
+        widgets = {
+            'location' : forms.TextInput(attrs={'class':'form-control mt-3','placeholder':'Origen'}),
+            'destination': forms.TextInput(attrs={'class':'form-control mt-3','placeholder':'Destino'}),
+            'distance': forms.TextInput(attrs={'class':'form-control mt-3','placeholder':'Distancia'})
+        }
+
+
 
 class EmailForm(forms.ModelForm):
     email = forms.EmailField(help_text="Requerido, 254 caracteres como máximo y debe ser válido", required=True)

@@ -1,9 +1,10 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView, UpdateView, TemplateView
 from .models import Profile
+from geolocalizacion.models import Address
 from django.urls import reverse_lazy
 from django import forms
-from .forms import UserCreationFormWithEmail, ProfileForm, EmailForm
+from .forms import UserCreationFormWithEmail, ProfileForm, EmailForm, AddressForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
@@ -30,14 +31,34 @@ class SignUpCreateView(CreateView):
 @method_decorator(login_required, name='dispatch')
 class ProfileUpdateView(UpdateView):
     form_class = ProfileForm
-    
     success_url = reverse_lazy('profile')
     template_name = "registration/profile_form.html"
 
     #para recuperar el objeto que se editara
     def get_object(self, queryset=None):
         profile, created = Profile.objects.get_or_create(user=self.request.user)
+        #address, created = Address.objects.get_or_create(address=self.request.address)
         return profile
+
+
+
+class AddressUpdateView(UpdateView):
+    model = Address
+    form_class = AddressForm
+    success_url = reverse_lazy('profile')
+    template_name = "registration/profile_address_form.html"
+    """
+    def get_object(self, queryset=None):
+        address, created = Address.objects.get_or_create(address=self.request.address)
+        return address
+    
+    def get_form(self, form_class=None):
+        form = super(AddressUpdateView, self).get_form()
+        form.fields['location'].widget = forms.TextInput(attrs={'class':'form-control mb-2', 'placeholder':'Dirección de origen'})
+        form.fields['destination'].widget = forms.TextInput(attrs={'class':'form-control mb-2', 'placeholder':'Dirección de destino'})
+        form.fields['distance'].widget = forms.TextInput(attrs={'class':'form-control mb-2', 'placeholder':'Distancia recorrida'})
+    """
+
 
 @method_decorator(login_required, name='dispatch')
 class EmailUpdateView(UpdateView):
