@@ -44,7 +44,7 @@
               
                 
               <p class="mt-3">
-                Click <a href="{% url 'profile_address' %}">aqui</a> para editar tu dirección
+                Click <a href="{% url 'profile_address' request.user.profile.address.id%}">aqui</a> para editar tu dirección
               <br>
                 Click <a href="{% url 'profile_email' %}">aqui</a> para editar tu email
               <br>
