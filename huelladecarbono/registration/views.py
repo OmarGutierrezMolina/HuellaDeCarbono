@@ -33,15 +33,22 @@ class ProfileUpdateView(UpdateView):
     form_class = ProfileForm
     success_url = reverse_lazy('profile')
     template_name = "registration/profile_form.html"
+    
 
     #para recuperar el objeto que se editara
     def get_object(self, queryset=None):
+        print("EL USUARIO ES", self.request.user.profile.address)
         profile, created = Profile.objects.get_or_create(user=self.request.user)
-        #address, created = Address.objects.get_or_create(address=self.request.address)
+        #print("BLABLABLA: ", user)
+        #address, created = Profile.objects.get_or_create(address=self.request.user.profile.address)
+        
+        
         return profile
 
+    
 
 
+@method_decorator(login_required, name='dispatch')
 class AddressUpdateView(UpdateView):
     model = Address
     form_class = AddressForm
@@ -49,7 +56,8 @@ class AddressUpdateView(UpdateView):
     template_name = "registration/profile_address_form.html"
     """
     def get_object(self, queryset=None):
-        address, created = Address.objects.get_or_create(address=self.request.address)
+        
+        
         return address
     
     def get_form(self, form_class=None):

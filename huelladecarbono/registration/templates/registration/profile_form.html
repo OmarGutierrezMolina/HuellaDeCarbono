@@ -26,11 +26,6 @@
               {{ form.link }}
               <input type="email" value="{{request.user.email}}" class="form-control mt-3" readonly>
               
-              <p>PRUEBA DE PARAMETROS {{request.user.profile.address.location}}</p>
-
-              
-              
-              
               {% if request.user.profile.address.location %}
                 <input type="text" value="{{request.user.profile.address.location}}" class="form-control mt-3" readonly>
                 <input type="text" value="{{request.user.profile.address.destination}}" class="form-control mt-3" readonly>
