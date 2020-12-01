@@ -7,7 +7,7 @@ from django import forms
 from .forms import UserCreationFormWithEmail, ProfileForm, EmailForm, AddressForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-
+from django.shortcuts import render
 # Create your views here.
 
 class SignUpCreateView(CreateView):
@@ -33,8 +33,6 @@ class ProfileUpdateView(UpdateView):
     form_class = ProfileForm
     success_url = reverse_lazy('profile')
     template_name = "registration/profile_form.html"
-    
-
     #para recuperar el objeto que se editara
     def get_object(self, queryset=None):
         print("EL USUARIO ES", self.request.user.profile.address)
@@ -44,7 +42,19 @@ class ProfileUpdateView(UpdateView):
         
         
         return profile
+"""   
+    def get(self, request):
+        profile, created = Profile.objects.get_or_create(user=self.request.user)
 
+        args = {
+            'profile':profile
+        }
+        return render(request, self.template_name, args)
+"""
+    
+
+
+    
     
 
 
