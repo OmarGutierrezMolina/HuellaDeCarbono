@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_save
-from geolocalizacion.models import Address
+
 # Create your models here.
 
 #para que se borre lo que habia antes
@@ -12,8 +12,7 @@ def custom_upload_to(instance, filename):
     return 'profiles/' + filename
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  
     avatar = models.ImageField(upload_to=custom_upload_to, null=True, blank=True, height_field=None, width_field=None, max_length=None)
     bio = models.TextField(null=True, blank=True)
     link = models.URLField(null=True, blank=True, max_length=200)
