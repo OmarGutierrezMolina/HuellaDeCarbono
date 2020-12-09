@@ -31,10 +31,21 @@
                 <input type="text" value="{{request.user.profile.address.location}}" class="form-control mt-3" readonly>
                 <input type="text" value="{{request.user.profile.address.destination}}" class="form-control mt-3" readonly>
                 <input type="text" value="{{request.user.profile.address.distance}} KM" class="form-control mt-3" readonly>
+                {% if request.user.profile.address.bike_conveyance %}
+                  <input type="text" value="Bicicleta" class="form-control mt-3" readonly>
+                {% elif request.user.profile.address.bus_conveyance %}
+                  <input type="text" value="Transporte público" class="form-control mt-3" readonly>
+                {% elif request.user.profile.address.car_conveyance %}
+                  <input type="text" value="Vehiculo particular" class="form-control mt-3" readonly>
+                {% endif %}
+                <input type="text" value="{{request.user.profile.address.footprint}} CO2" class="form-control mt-3" readonly>
+                  
               {% else %}
                 <input type="text" value="Dirrección de origen no registrada, por favor, ingrese su dirección" class="form-control mt-3" readonly>
                 <input type="text" value="Dirección de destino no registrada, por favor, ingrese su dirección" class="form-control mt-3" readonly>
                 <input type="text" value="Distancia no registrada" class="form-control mt-3" readonly>
+                <input type="text" value="Medio de transporte no registrado" class="form-control mt-3" readonly>
+                <input type="text" value="Huella no registrada" class="form-control mt-3" readonly>
               {% endif %}
                   
               

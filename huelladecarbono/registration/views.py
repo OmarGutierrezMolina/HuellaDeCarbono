@@ -8,6 +8,13 @@ from .forms import UserCreationFormWithEmail, ProfileForm, EmailForm, AddressFor
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+
+#IMPORTACIONES PARA GRÁFICAR MAPA
+
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
+from geolocalizacion.utils import get_geo, get_center_coordinates, get_zoom, get_ip_address
+import folium
 # Create your views here.
 
 class SignUpCreateView(CreateView):
@@ -35,13 +42,19 @@ class ProfileUpdateView(UpdateView):
     template_name = "registration/profile_form.html"
     #para recuperar el objeto que se editara
     def get_object(self, queryset=None):
-        print("EL USUARIO ES", self.request.user.profile.address)
+        #print("EL USUARIO ES", self.request.user.profile.address)
         profile, created = Profile.objects.get_or_create(user=self.request.user)
         #print("BLABLABLA: ", user)
-        #address, created = Profile.objects.get_or_create(address=self.request.user.profile.address)
+        #new_address = Address.objects.create(location='NO REGISTRADA', destination='NO REGISTRADA', distance=0)
+        #new_address.save()
+        #print("DIRECCIÓN CREADA")
+        #profile= Profile.objects.get_or_create(address=new_address)
         
         
         return profile
+
+    
+
 """   
     def get(self, request):
         profile, created = Profile.objects.get_or_create(user=self.request.user)
@@ -54,16 +67,14 @@ class ProfileUpdateView(UpdateView):
     
 
 
-    
-    
 
-
+    
 @method_decorator(login_required, name='dispatch')
 class AddressUpdateView(UpdateView):
     model = Address
     form_class = AddressForm
-    success_url = reverse_lazy('profile')
-    template_name = "registration/profile_address_form.html"
+    success_url = reverse_lazy('map_view')
+    template_name = "registration/profile_update_address_form.html"
     """
     def get_object(self, queryset=None):
         
@@ -76,6 +87,65 @@ class AddressUpdateView(UpdateView):
         form.fields['destination'].widget = forms.TextInput(attrs={'class':'form-control mb-2', 'placeholder':'Dirección de destino'})
         form.fields['distance'].widget = forms.TextInput(attrs={'class':'form-control mb-2', 'placeholder':'Distancia recorrida'})
     """
+
+
+@method_decorator(login_required, name='dispatch')
+class MapView(TemplateView):
+    template_name = "registration/profile_map.html"
+    success_url = reverse_lazy('profile')
+    __mapa = folium.Map(width=800, height=500, location=(-33.43,-70.65))
+    __origin = None
+    __destination = None
+    __distance = None
+    """
+    def get(self, request, *args, **kwargs):
+        print("La dirección es:", self.request.user.profile.address.location)
+        print("El destino es:", self.request.user.profile.address.destination.addr)
+        print("La huella es:", self.request.user.profile.address.conveyance.footprint)
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+    """
+    def  get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mapa = folium.Map(width=800, height=500, location=(-33.43,-70.65))
+        #MAPEO DE LAS VARIABLES
+        geolocator = Nominatim(user_agent="registration")
+        origin_ = self.request.user.profile.address.location
+        destination_ = self.request.user.profile.address.destination.addr
+        conveyance_ = self.request.user.profile.address.conveyance.footprint
+        
+        #GEOLOCALIZACIÓN DE ORIGEN
+        """
+        origin = geolocator.geocode(origin_)
+        o_lat = origin.latitude
+        o_lon = origin.longitude
+        o_point = (o_lat,o_lon)
+        
+        #GEOLOCALIZACOÓN DE DESTINO
+        destination = geolocator.geocode(destination_)
+        d_lat = destination.latitude
+        d_lon = destination.longitude
+        d_point = (d_lat,d_lon)
+        #CALCULAR DISTANCIA
+        distance = round(geodesic(o_point,d_point).km,2)
+
+        
+        #GENERACIÓN DE MAPA
+        CalculateDistanceView.__mapa = folium.Map(width=800, height=500, location=get_center_coordinates(o_lat,o_lon,d_lat,d_lon), zoom_start=get_zoom(distance))
+
+        #MARCADOR PARA EL ORIGEN
+        folium.Marker([o_lat,o_lon], tooltip="Click para ver más", popup=origin, icon=folium.Icon(color='purple')).add_to(mapa)
+
+        #MARCADOR PARA EL DESTINO
+        folium.Marker([d_lat,d_lon], tooltip="Click para ver más", popup=destination, icon=folium.Icon(color='blue', icon='cloud')).add_to(mapa)
+        line = folium.PolyLine(locations=[o_point,d_point], weight=2, color='blue')
+        """
+        mapa= mapa._repr_html_()
+        
+        
+        context["map"] = mapa
+        return context
+    
 
 
 @method_decorator(login_required, name='dispatch')
