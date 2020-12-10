@@ -5,19 +5,10 @@
 {% block content %}
 <main role="main">
   <div class="container">
-    <p>Hola mundo</p>
     {{map|safe}}
-    <hr>
-    {% if  distance is not None %}
-        
-      {% endif %}
-    
     <form action="" method="post">{% csrf_token %}
-                
-      
-
       <div class="text-center">
-        
+        <a class="btn btn-secondary btn-block" href="{% url 'profile_address' request.user.profile.address.id%}">Volver</a>
         <a class="btn btn-primary btn-block" href="{% url 'profile' %}">Confirmar</a>
       </div>
       
