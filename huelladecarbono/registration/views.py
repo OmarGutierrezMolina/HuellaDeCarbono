@@ -13,7 +13,7 @@ from django.shortcuts import render
 
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
-from geolocalizacion.utils import get_geo, get_center_coordinates, get_zoom, get_ip_address
+from geolocalizacion.utils import get_geo, get_center_coordinates, get_zoom, get_ip_address, get_geolocate
 import folium
 # Create your views here.
 
@@ -113,9 +113,28 @@ class MapView(TemplateView):
         origin_ = self.request.user.profile.address.location
         destination_ = self.request.user.profile.address.destination.addr
         conveyance_ = self.request.user.profile.address.conveyance.footprint
-        
+        #destination = geolocator.geocode(destination_)
         #GEOLOCALIZACIÓN DE ORIGEN
+        origin, o_lat, o_lon, o_point = get_geolocate(origin_)
+        destination, d_lat, d_lon, d_point = get_geolocate(destination_)
+        distance = round(geodesic(o_point,d_point).km,2)
+
+        #GENERACIÓN DE MAPA
+        mapa = folium.Map(width=800, height=500, location=get_center_coordinates(o_lat,o_lon,d_lat,d_lon), zoom_start=get_zoom(distance))
+
+        #MARCADOR PARA EL ORIGEN
+        folium.Marker([o_lat,o_lon], tooltip="Click para ver más", popup=origin, icon=folium.Icon(color='purple')).add_to(mapa)
+
+        #MARCADOR PARA EL DESTINO
+        folium.Marker([d_lat,d_lon], tooltip="Click para ver más", popup=destination, icon=folium.Icon(color='blue', icon='cloud')).add_to(mapa)
+        line = folium.PolyLine(locations=[o_point,d_point], weight=2, color='blue')
+        mapa.add_child(line)
         """
+        print("este es el origen: ", origin)
+        print("este es el latitud: ", o_lat)
+        print("este es la longitud: ", o_lon)
+        print("este es el punto: ", o_point)
+        
         origin = geolocator.geocode(origin_)
         o_lat = origin.latitude
         o_lon = origin.longitude

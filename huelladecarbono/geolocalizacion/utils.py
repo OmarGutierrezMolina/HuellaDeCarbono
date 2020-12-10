@@ -1,4 +1,6 @@
 from django.contrib.gis.geoip2 import GeoIP2
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
 
 #HELPER FUNCTIONS
 
@@ -32,3 +34,11 @@ def get_ip_address(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+def get_geolocate(location):
+    geolocator = Nominatim(user_agent="geolocalizacion")
+    location_ = geolocator.geocode(location)
+    l_lat = location_.latitude
+    l_lon = location_.longitude
+    l_point = (l_lat,l_lon)
+    return location_, l_lat, l_lon, l_point
