@@ -13,7 +13,7 @@ from django.shortcuts import render
 
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
-from geolocalizacion.utils import get_geo, get_center_coordinates, get_zoom, get_ip_address, get_geolocate
+from geolocalizacion.utils import get_geo, get_center_coordinates, get_zoom, get_ip_address, get_geolocate, get_distance, get_footprint
 import folium
 # Create your views here.
 
@@ -75,6 +75,15 @@ class AddressUpdateView(UpdateView):
     form_class = AddressForm
     success_url = reverse_lazy('map_view')
     template_name = "registration/profile_update_address_form.html"
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        distance = get_distance(form.cleaned_data.get('location'), form.cleaned_data.get('destination'))
+        instance.distance = distance
+        instance.footprint = get_footprint(distance, self.request.user.profile.address.conveyance.footprint)
+        instance.save()
+        return super().form_valid(form)
+
+
     """
     def get_object(self, queryset=None):
         
