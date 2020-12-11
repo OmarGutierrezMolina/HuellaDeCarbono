@@ -33,6 +33,15 @@
     <link rel="stylesheet" href="{% static 'core/assets/theme/css/style.css' %}">
     <link rel="preload" as="style" href="{% static 'core/assets/mobirise/css/mbr-additional.css' %}"><link rel="stylesheet" href="{% static 'core/assets/mobirise/css/mbr-additional.css' %}" type="text/css">
     
+    <!-- ESTILO CHART.JS-->
+    <!-- semantic UI -->
+    <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
+    <!--Chart js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
   
   </head>
   <body>
@@ -93,6 +102,9 @@
 
 
       <!-- Contenido -->
+      
+      {% block scripts %}{% endblock scripts %}
+        
       {% block content %}{% endblock %}
 
   
@@ -201,5 +213,9 @@
       <script src="{% static 'core/vendor/jquery/jquery.min.js' %}"></script>
       <script src="{% static 'core/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
       <script src="{% static 'core/js/main.js' %}"></script>
+      <!-- Chart.js 
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+        -->
   </body>
 </html>
