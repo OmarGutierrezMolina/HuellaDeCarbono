@@ -91,7 +91,8 @@ class AddressUpdateView(UpdateView):
         instance = form.save(commit=False)
         distance = get_distance(form.cleaned_data.get('location'), form.cleaned_data.get('destination'))
         instance.distance = distance
-        instance.footprint = get_footprint(distance, self.request.user.profile.address.conveyance.footprint)
+        #print("La huella es: ", instance.footprint)
+        #instance.footprint = get_footprint(distance, self.request.user.profile.address.conveyance.footprint)
         instance.save()
         return super().form_valid(form)
 
