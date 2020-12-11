@@ -8,6 +8,7 @@ from .forms import UserCreationFormWithEmail, ProfileForm, EmailForm, AddressFor
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from decimal import Decimal
 
 #IMPORTACIONES PARA GRÁFICAR MAPA
 
@@ -52,7 +53,18 @@ class ProfileUpdateView(UpdateView):
         
         
         return profile
-
+    """
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        print("La distancia es: ", self.request.user.profile.address.distance)
+        print("La huella es: ", self.request.user.profile.address.footprint)
+        print("La huella del medio es: ", self.request.user.profile.address.conveyance.footprint)
+        print("La fakin multiplicación da: ", Decimal(self.request.user.profile.address.distance)*self.request.user.profile.address.conveyance.footprint)
+        instance.footprint = Decimal(self.request.user.profile.address.distance)*self.request.user.profile.address.conveyance.footprint
+        print("El resultado asignado será: ", instance.footprint)
+        instance.save()
+        return super().form_valid(form)
+        """
     
 
 """   
@@ -102,11 +114,12 @@ class AddressUpdateView(UpdateView):
 class MapView(TemplateView):
     template_name = "registration/profile_map.html"
     success_url = reverse_lazy('profile')
+    """
     __mapa = folium.Map(width=800, height=500, location=(-33.43,-70.65))
     __origin = None
     __destination = None
     __distance = None
-    """
+    
     def get(self, request, *args, **kwargs):
         print("La dirección es:", self.request.user.profile.address.location)
         print("El destino es:", self.request.user.profile.address.destination.addr)
@@ -121,7 +134,6 @@ class MapView(TemplateView):
         geolocator = Nominatim(user_agent="registration")
         origin_ = self.request.user.profile.address.location
         destination_ = self.request.user.profile.address.destination.addr
-        conveyance_ = self.request.user.profile.address.conveyance.footprint
         #destination = geolocator.geocode(destination_)
         #GEOLOCALIZACIÓN DE ORIGEN
         origin, o_lat, o_lon, o_point = get_geolocate(origin_)
@@ -168,7 +180,7 @@ class MapView(TemplateView):
         folium.Marker([d_lat,d_lon], tooltip="Click para ver más", popup=destination, icon=folium.Icon(color='blue', icon='cloud')).add_to(mapa)
         line = folium.PolyLine(locations=[o_point,d_point], weight=2, color='blue')
         """
-        mapa= mapa._repr_html_()
+        mapa = mapa._repr_html_()
         
         
         context["map"] = mapa
