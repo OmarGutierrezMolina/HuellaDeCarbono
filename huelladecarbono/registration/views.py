@@ -90,8 +90,17 @@ class AddressUpdateView(UpdateView):
     template_name = "registration/profile_update_address_form.html"
     def form_valid(self, form):
         instance = form.save(commit=False)
-        distance = get_distance(form.cleaned_data.get('location'), form.cleaned_data.get('destination'))
+        location = f"{self.request.user.profile.address.calle} {self.request.user.profile.address.altura} {self.request.user.profile.address.comuna.comuna} {self.request.user.profile.address.region.region}"
+        
+        #CALCULAR LA DISTANCIA
+        origin, o_lat, o_lon, o_point = get_geolocate(location)
+        destination, d_lat, d_lon, d_point = get_geolocate(self.request.user.profile.address.destination.addr)
+        distance = round(geodesic(o_point,d_point).km,2)
+
+
+        #distance = get_distance(location, form.cleaned_data.get('destination')) NO SE PQ NO FUNCIONA AL LLAMAR LA FUNCION
         instance.distance = distance
+        print("La distancia es de: ", distance)
         #print("La huella es: ", instance.footprint)
         #instance.footprint = get_footprint(distance, self.request.user.profile.address.conveyance.footprint)
         instance.save()
@@ -134,13 +143,14 @@ class MapView(TemplateView):
         mapa = folium.Map(width=800, height=500, location=(-33.43,-70.65))
         #MAPEO DE LAS VARIABLES
         geolocator = Nominatim(user_agent="registration")
-        origin_ = self.request.user.profile.address.location
+        origin_ = f"{self.request.user.profile.address.calle} {self.request.user.profile.address.altura} {self.request.user.profile.address.comuna.comuna} {self.request.user.profile.address.region.region}"
         destination_ = self.request.user.profile.address.destination.addr
         #destination = geolocator.geocode(destination_)
         #GEOLOCALIZACIÓN DE ORIGEN
         origin, o_lat, o_lon, o_point = get_geolocate(origin_)
         destination, d_lat, d_lon, d_point = get_geolocate(destination_)
         distance = round(geodesic(o_point,d_point).km,2)
+        
 
         #GENERACIÓN DE MAPA
         mapa = folium.Map(width=800, height=500, location=get_center_coordinates(o_lat,o_lon,d_lat,d_lon), zoom_start=get_zoom(distance))

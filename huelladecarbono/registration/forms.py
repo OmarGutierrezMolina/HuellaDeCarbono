@@ -32,9 +32,15 @@ class AddressForm(forms.ModelForm):
     
     class Meta:
         model = Address
-        fields = ['location','destination','conveyance','region','provincia','comuna']
+        fields = ['region','provincia','comuna','calle', 'altura','destination','conveyance',]
+        exclude = ['location']
         widgets = {
-            'location' : forms.TextInput(attrs={'class':'form-control mt-3','placeholder':'Origen'}),
+            'region': forms.Select(attrs={'class':'form-control mt-3','placeholder':'Destino'}),
+            'provincia': forms.Select(attrs={'class':'form-control mt-3','placeholder':'Destino'}),
+            'comuna': forms.Select(attrs={'class':'form-control mt-3','placeholder':'Destino'}),
+            'calle' : forms.TextInput(attrs={'class':'form-control mt-3','placeholder':'Calle'}),
+            'altura' : forms.NumberInput(attrs={'class':'form-control mt-3','placeholder':'123'}),
+            #'location' : forms.TextInput(attrs={'class':'form-control mt-3','placeholder':'Origen'}),
             'destination': forms.Select(attrs={'class':'form-control mt-3','placeholder':'Destino'}),
             'conveyance': forms.Select(attrs={'class':'form-control mt-3','placeholder':'Medio de transporte'}),
         }
@@ -43,9 +49,11 @@ class AddressForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['provincia'].queryset=Provincia.objects.none()
         self.fields['comuna'].queryset=Comuna.objects.none()
+
+        #VALIDACIÓN DE QUE LAS OPCIONES ESTEN CORRECTAS
         if 'region' in self.data:
             try:
-                region_id=int(self.data.get)('region')
+                region_id = int(self.data.get('region'))
                 self.fields['provincia'].queryset = Provincia.objects.filter(region_id=region_id).order_by('provincia')
             except(ValueError, TypeError):
                 pass

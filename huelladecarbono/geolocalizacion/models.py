@@ -108,6 +108,8 @@ class Address(models.Model):
     comuna = models.ForeignKey(Comuna, on_delete=models.SET_NULL, null=True)
     provincia = models.ForeignKey(Provincia, on_delete=models.SET_NULL, null=True)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
+    calle = models.CharField(max_length=50, null=True)
+    altura = models.IntegerField(null=True)
     destination = models.ForeignKey(Destination, null=True, on_delete=models.CASCADE)
     distance = models.DecimalField( max_digits=10, null=True, decimal_places=2)
     footprint = models.DecimalField( max_digits=10, null=True, decimal_places=2)

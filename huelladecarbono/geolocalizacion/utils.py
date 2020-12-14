@@ -2,6 +2,7 @@ from django.contrib.gis.geoip2 import GeoIP2
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from decimal import Decimal
+from geopy.exc import GeocoderTimedOut
 
 #HELPER FUNCTIONS
 
@@ -67,3 +68,11 @@ def get_footprint(distance, footprint):
         print("La huella de carbono en Vehículo privado: ", footprint_)
         return footprint_
     """
+
+def check_address_exist(address):
+    try:
+        geolocator = Nominatim(user_agent="geolocalizacion")
+        location = geolocator.geocode(address)
+        print(location.latitude, location.longitude)
+    except GeocoderTimedOut as e:
+            print("Error: geocode failed on input %s with message %s"%(address, e.message))
