@@ -69,3 +69,58 @@ def ensure_address_exists(sender, instance, **kwargs):
     #para que se ejecute solo una vez al crear perfil
     if kwargs.get('created',False):
         Address.objects.get_or_create(profile=instance)
+
+class Region(models.Model):
+    """Model definition for Region."""
+
+    # TODO: Define fields here
+    region = models.CharField(max_length=100)
+    abreviatura = models.CharField(max_length=3)
+    capital = models.CharField(max_length=50)
+
+    class Meta:
+        """Meta definition for Region."""
+
+        verbose_name = 'Region'
+        verbose_name_plural = 'Regiones'
+
+    def __str__(self):
+        """Unicode representation of Region."""
+        return f"{self.abreviatura} {self.region}"
+
+
+
+class Provincia(models.Model):
+    """Model definition for Provincia."""
+
+    # TODO: Define fields here
+    provincia = models.CharField(max_length=50)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+
+    class Meta:
+        """Meta definition for Provincia."""
+
+        verbose_name = 'Provincia'
+        verbose_name_plural = 'Provincias'
+
+    def __str__(self):
+        """Unicode representation of Provincia."""
+        return self.provincia
+
+
+class Comuna(models.Model):
+    """Model definition for Comuna."""
+
+    # TODO: Define fields here
+    comuna = models.CharField(max_length=50)
+    provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
+
+    class Meta:
+        """Meta definition for Comuna."""
+
+        verbose_name = 'Comuna'
+        verbose_name_plural = 'Comunas'
+
+    def __str__(self):
+        """Unicode representation of Comuna."""
+        return self.comuna

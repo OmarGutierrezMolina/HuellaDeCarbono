@@ -32,7 +32,7 @@ class AddressForm(forms.ModelForm):
     
     class Meta:
         model = Address
-        fields = ['location','destination','conveyance','footprint']
+        fields = ['location','destination','conveyance']
         widgets = {
             'location' : forms.TextInput(attrs={'class':'form-control mt-3','placeholder':'Origen'}),
             'destination': forms.Select(attrs={'class':'form-control mt-3','placeholder':'Destino'}),
