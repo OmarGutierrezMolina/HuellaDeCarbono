@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView, UpdateView, TemplateView
 from .models import Profile
-from geolocalizacion.models import Address
+from geolocalizacion.models import Address, Comuna, Provincia, Region
 from django.urls import reverse_lazy
 from django import forms
 from .forms import UserCreationFormWithEmail, ProfileForm, EmailForm, AddressForm
@@ -9,6 +9,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from decimal import Decimal
+from django.http import JsonResponse
 
 #IMPORTACIONES PARA GRÁFICAR MAPA
 
@@ -203,3 +204,16 @@ class EmailUpdateView(UpdateView):
         form = super(EmailUpdateView, self).get_form()
         form.fields['email'].widget = forms.EmailInput(attrs={'class':'form-control mb-2', 'placeholder':'Dirección email'})
         return form
+
+
+def load_provincia(request):
+    region_id = request.GET.get('region_id')
+    provincias = Provincia.objects.filter(region_id=region_id).order_by('provincia')
+    return render(request, 'registration/provincia_dropdown_list_options.html', {'provincias':provincias})
+
+def load_comuna(request):
+    provincia_id = request.GET.get('provincia_id')
+    comunas = Comuna.objects.filter(provincia_id=provincia_id).order_by('comuna')
+    return render(request, 'registration/comuna_dropdown_list_options.html', {'comunas':comunas})
+    
+

@@ -7,12 +7,41 @@
   <div class="container">
     <div class="row mt-3">
       <div class="col-md-9 mx-auto mb-5">
-        <form action="" method="post">{% csrf_token %}
+        <form action="" method="post" id="addressForm" data-comuna-url="{% url 'ajax_load_comunas' %}" data-provincia-url="{% url 'ajax_load_provincias' %}">{% csrf_token %}
           <h3 class="mb-4">Dirección
           </h3>
           {{form.as_p}}
           <p><input type="submit" class="btn btn-primary btn-block" value="Visualizar Mapa"></p>
         </form>
+        <script>
+          $("#id_region").change(function(){
+            var url = $("#addressForm").attr("data-provincia-url");
+            var regionId = $(this).val();
+            
+            $.ajax({
+              url : url,
+              data: {
+                'region_id':regionId
+              },
+              success: function(data){
+                $("#id_provincia").html(data);
+              }
+            });
+          });
+          $("#id_provincia").change(function(){
+            var url = $("#addressForm").attr("data-comuna-url");
+            var provinciaId = $(this).val();
+            $.ajax({
+              url : url,
+              data: {
+                'provincia_id':provinciaId
+              },
+              success: function(data){
+                $("#id_comuna").html(data);
+              }
+            });
+          });
+        </script>
       </div>
     </div>
   </div>
