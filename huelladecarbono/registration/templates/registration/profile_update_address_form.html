@@ -11,9 +11,45 @@
           <h3 class="mb-4">Dirección
           </h3>
           {{form.as_p}}
+          
+          {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+              {{message}}
+            </div>
+          {% endfor %}
+            
+          <p><a class="btn btn-primary btn-block" value="Verificar dirección" href="{% url 'check_address_exist' %}" id="verifyRegion">Verificar dirección</a></p>
           <p><input type="submit" class="btn btn-primary btn-block" value="Visualizar Mapa"></p>
         </form>
+        <!--
         <script>
+          $("#verifyRegion").click(function(){
+            console.log("WENA LOS CABROS")
+            var url = $("#addressForm").attr("verify-Region");
+            var regionId = $(this).val();
+            var provinciaId = $(this).val;
+            var comunaId = $(this).val;
+            var calleId = $(this).val;
+            var alturaId = $(this).val;
+            
+            $.ajax({
+              url : url,
+              data: {
+                'region_id':regionId,
+                'provincia_id':provinciaId,
+                'comuna_id':comunaId,
+                'calle_id':calleId,
+                'altura_id':alturaId
+              },
+              success: function(data){
+                $("#id_provincia").html(data);
+              }
+            });
+          });
+        </script>
+        -->
+        <script>
+          
           $("#id_region").change(function(){
             var url = $("#addressForm").attr("data-provincia-url");
             var regionId = $(this).val();
@@ -24,6 +60,7 @@
                 'region_id':regionId
               },
               success: function(data){
+                console.log(data)
                 $("#id_provincia").html(data);
               }
             });
@@ -34,7 +71,7 @@
             $.ajax({
               url : url,
               data: {
-                'provincia_id':provinciaId
+                'provincia_id':provinciaId,
               },
               success: function(data){
                 $("#id_comuna").html(data);

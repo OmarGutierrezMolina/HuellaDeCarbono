@@ -7,7 +7,8 @@ from django import forms
 from .forms import UserCreationFormWithEmail, ProfileForm, EmailForm, AddressForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from decimal import Decimal
 from django.http import JsonResponse
 
@@ -223,7 +224,28 @@ def load_provincia(request):
 
 def load_comuna(request):
     provincia_id = request.GET.get('provincia_id')
+    comuna_id = request.GET.get('comuna_id')
+    print("Logre sacar la comuna: ", comuna_id)
     comunas = Comuna.objects.filter(provincia_id=provincia_id).order_by('comuna')
     return render(request, 'registration/comuna_dropdown_list_options.html', {'comunas':comunas})
+
+def check_address_exist(request):
+    # region_id = request.GET.get('region_id')
+    # provincia_id = request.GET.get('provincia_id')
+    # comuna_id = request.GET.get('comuna_id')
+    # calle = request.GET.get('calle_id')
+    # altura = request.GET.get('altura_id')
+    # print(f"La dirección es {calle} {altura}")
+    if request.user.profile.address.calle:
+        origin_ = f"{request.user.profile.address.calle} {request.user.profile.address.altura} {request.user.profile.address.comuna} {request.user.profile.address.region}"
+        #print("La direccion es:", origin_)
+        try:
+            origin, o_lat, o_lon, o_point = get_geolocate(origin_)
+            messages.info(request, f"La dirección existe y es {origin_}")
+            return redirect('profile_address', pk=request.user.profile.address.id)
+        except:
+            messages.error(request, f"La dirección no existe o puede ser encontrada")
+            return redirect('profile_address', pk=request.user.profile.address.id)
+    
     
 
